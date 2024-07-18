@@ -1,0 +1,37 @@
+{
+  "name": "@juanelas/solidity-types-from-json",
+  "version": "1.0.0",
+  "description": "Compute solidity types from an arbitrary JS object so that we can use eth_signTypedData (EIP-712) with arbitrary objects",
+  "keywords": ["EIP-712", "TypedData", "eth_signtypeddata", "ethereum", "solidity"],
+  "contributors": [
+    "Juan Hernández Serrano <j.hernandez@upc.edu> (https://github.com/juanelas)",
+    "Antonio Alarcón García-Saavedra <antonio.alarcon@upc.edu>"
+  ],
+  "repository": "github:juanelas/solidity-types-from-json",
+  "license": "EUPL-1.2",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "npm run build:esm && npm run build:cjs",
+    "test": "ts-node test/test.ts"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.17.7",
+    "@types/pluralize": "^0.0.33",
+    "lodash": "^4.17.21",
+    "pluralize": "^8.0.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "ts-standard": "^12.0.2",
+    "typescript": "^5.5.3"
+  }
+}
