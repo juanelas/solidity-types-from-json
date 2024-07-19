@@ -1,0 +1,96 @@
+name: build, test (node and browser), coverage, publish to NPM
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  buildntest:
+    name: build and test in Node.js and browser
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
+        node-version: [18, 20, 22]
+      # When set to true, GitHub cancels all in-progress jobs if any matrix job fails.
+      fail-fast: false
+      # The maximum number of jobs that can run simultaneously. Set to 1 if you can't run tests in parallel
+      # max-parallel: 1
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: install
+        run: npm ci
+      
+      - name: build
+        run: npm run build
+
+      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22'
+        name: browser tests
+        run: npm run test:browser-headless
+        # env:
+        #   VARIABLE1: ${{ secrets.VARIABLE1 }}
+        #   VARIABLE2: ${{ secrets.VARIABLE2 }}
+
+      - name: node esm tests
+        run: npm run test:node-esm
+        # env:
+        #   VARIABLE1: ${{ secrets.VARIABLE1 }}
+        #   VARIABLE2: ${{ secrets.VARIABLE2 }}
+      
+      - name: node cjs tests and coverage
+        run: npm run coverage
+        # env:
+        #   VARIABLE1: ${{ secrets.VARIABLE1 }}
+        #   VARIABLE2: ${{ secrets.VARIABLE2 }}
+
+  publish:
+    needs: [buildntest]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: install
+        run: npm ci
+      
+      - name: build
+        run: npm run build
+
+      - name: coverage
+        run: npm run coverage
+
+      - name: send report to coveralls.io
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: release bundled js
+        uses: alexellis/upload-assets@0.4.1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: '["dist/bundles/*.js", "dist/bundle.umd.js", "dist/esm/bundle.js", "dist/esm/bundle.min.js"]'
+
+      # - name: NPM publish
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,11 +1,15 @@
-import { isEqual } from 'lodash'
-import { isPlural, singular } from 'pluralize'
+import pluralize from 'pluralize'
+import _ from 'lodash'
+const { isEqual } = _
+const { isPlural, singular } = pluralize
 
 type PrimitiveType = 'address' | 'string' | 'uint256' | 'bool'
-type TypeDescription = PrimitiveType | string
 type TypesObject = Record<string, TypeDescriptionObject>
-
-type TypeDescriptionObject = Array<Record<string, TypeDescription>>
+type TypeDescriptionObject = TypedDataField[]
+interface TypedDataField {
+  name: string
+  type: string
+}
 
 class SolidityTypes {
   private solidityTypes: TypesObject
@@ -123,7 +127,7 @@ export function jsonToSolidityTypes (obj: any, options?: JsonToSolidityTypesOpti
     return `${firstElementType}[]`
   }
 
-  function _inferType (value: any, key?: string): TypeDescription {
+  function _inferType (value: any, key?: string): string {
     if (Array.isArray(value)) {
       let arrayKey: string | undefined
       if (opts.getTypeNamesFromKeyValues && key !== undefined) {

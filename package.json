@@ -1,37 +1,177 @@
 {
   "name": "@juanelas/solidity-types-from-json",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Compute solidity types from an arbitrary JS object so that we can use eth_signTypedData (EIP-712) with arbitrary objects",
-  "keywords": ["EIP-712", "TypedData", "eth_signtypeddata", "ethereum", "solidity"],
+  "keywords": [
+    "EIP-712",
+    "TypedData",
+    "eth_signtypeddata",
+    "ethereum",
+    "solidity"
+  ],
+  "license": "EUPL-1.2",
   "contributors": [
     "Juan Hernández Serrano <j.hernandez@upc.edu> (https://github.com/juanelas)",
     "Antonio Alarcón García-Saavedra <antonio.alarcon@upc.edu>"
   ],
   "repository": "github:juanelas/solidity-types-from-json",
-  "license": "EUPL-1.2",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.node.js",
+  "browser": "./dist/esm/index.browser.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "node": {
+        "import": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/esm/index.node.js"
+        },
+        "require": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/cjs/index.node.js"
+        }
+      },
+      "script": "./dist/bundles/iife.js",
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/esm/index.browser.js"
+      }
+    },
+    "./esm-browser-bundle": "./dist/bundles/esm.min.js",
+    "./dist/bundles/esm.min.js": "./dist/bundles/esm.min.js",
+    "./esm-browser-bundle-nomin": "./dist/bundles/esm.js",
+    "./dist/esm/bundle.js": "./dist/bundles/esm.min.js",
+    "./iife-browser-bundle": "./dist/bundles/iife.js",
+    "./dist/bundles/iife.js": "./dist/bundles/iife.js",
+    "./umd-browser-bundle": "./dist/bundles/umd.js",
+    "./dist/bundles/umd.js": "./dist/bundles/umd.js",
+    "./dist/cjs/index.node": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/cjs/index.node.js"
+    },
+    "./dist/esm/index.node": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/esm/index.node.js"
+    },
+    "./dist/esm/index.browser": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/esm/index.browser.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "imports": {
+    "#pkg": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/cjs/index.node.js"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/esm/index.node.js"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/esm/index.browser.js"
+      }
     }
   },
+  "directories": {
+    "build": "./build",
+    "dist": "./dist",
+    "docs": "./docs",
+    "src": "./src",
+    "test": "./test",
+    "benchmark": "./benchmark",
+    "mocha-ts": "./.mocha-ts"
+  },
   "scripts": {
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build": "npm run build:esm && npm run build:cjs",
-    "test": "ts-node test/test.ts"
+    "_build:cleantypes": "rimraf .types",
+    "_build:cjsAndesmPkgJsons": "node ./build/bin/post-build.js",
+    "build": "run-s lint:src build:js lint:test docs",
+    "build:js": "rollup -c build/rollup.config.mjs",
+    "postbuild:js": "run-s _build:cleantypes _build:cjsAndesmPkgJsons",
+    "clean": "rimraf .mocha-ts coverage dist .types docs",
+    "coverage": "c8 --clean --check-coverage --exclude \"{src/ts/**/*.spec.ts,src/ts/**/*.test.ts,test,test-vectors,build}\" --exclude-after-remap --reporter=text --reporter=lcov node ./build/bin/mocha-ts.js --commonjs ",
+    "docs": "node build/build.docs.js",
+    "git:add": "git add -A",
+    "lint": "ts-standard --fix",
+    "lint:src": "ts-standard --fix \"src/**/!(*.spec|*.test).ts\"",
+    "lint:test": "ts-standard --fix \"{test/**/*.ts,src/**/*.spec.ts,src/**/*.test.ts}\"",
+    "mocha-ts": "node --experimental-modules --experimental-json-modules --es-module-specifier-resolution=node ./build/bin/mocha-ts.js ",
+    "mocha-ts:cjs": "node ./build/bin/mocha-ts.js --commonjs ",
+    "mocha-ts:watch": "npm run mocha-ts:cjs -- --watch --timeout 0",
+    "mocha-ts:browser": "node build/testing/browser/index.js ",
+    "mocha-ts:browser-headless": "node build/testing/browser/index.js headless ",
+    "preversion": "run-s clean lint:src build:js lint:test coverage test:browser-headless",
+    "version": "run-s docs git:add",
+    "postversion": "git push --follow-tags",
+    "test": "run-s test:node test:browser-headless",
+    "test:browser": "npm run mocha-ts:browser",
+    "test:browser-headless": "npm run mocha-ts:browser-headless",
+    "test:node": "run-s test:node-cjs test:node-esm",
+    "test:node-cjs": "npm run mocha-ts:cjs ",
+    "test:node-esm": "npm run mocha-ts ",
+    "watch": "npm run mocha-ts:watch "
+  },
+  "ts-standard": {
+    "project": "tsconfig.json",
+    "env": [
+      "mocha"
+    ],
+    "globals": [
+      "IS_BROWSER",
+      "browser",
+      "page",
+      "chai"
+    ],
+    "ignore": [
+      "dist/**/*",
+      "examples/**/*",
+      "types/**/*",
+      "benchmark/**/*"
+    ]
+  },
+  "nodeBrowserSkel": {
+    "badges": {
+      "workflow": true,
+      "coveralls": true
+    },
+    "git": {
+      "branch": "main"
+    }
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-inject": "^5.0.5",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-multi-entry": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/chai": "^4.3.10",
+    "@types/mocha": "^10.0.4",
+    "c8": "^10.1.2",
+    "chai": "^4.4.1",
+    "dotenv": "^16.3.1",
+    "glob": "^11.0.0",
+    "json5": "^2.2.3",
+    "minimatch": "^10.0.1",
+    "mocha": "^10.6.0",
+    "npm-run-all": "^4.1.5",
+    "pirates": "^4.0.6",
+    "puppeteer": "^22.13.1",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.3.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "ts-standard": "^12.0.2",
+    "tslib": "^2.6.2",
+    "typedoc-plugin-markdown": "^4.2.1",
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "@types/lodash": "^4.17.7",
     "@types/pluralize": "^0.0.33",
     "lodash": "^4.17.21",
     "pluralize": "^8.0.0"
-  },
-  "devDependencies": {
-    "ts-node": "^10.9.2",
-    "ts-standard": "^12.0.2",
-    "typescript": "^5.5.3"
   }
 }
