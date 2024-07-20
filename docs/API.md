@@ -1,4 +1,4 @@
-# @juanelas/solidity-types-from-json v1.0.0
+# @juanelas/solidity-types-from-json v1.0.1
 
 ## Interfaces
 

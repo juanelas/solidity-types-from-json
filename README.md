@@ -2,7 +2,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Node.js CI](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/juanelas/solidity-types-from-json/badge.svg?branch=refs/tags/v0.1.5)](https://coveralls.io/github/juanelas/solidity-types-from-json?branch=refs/tags/v1.0.0)
+[![Coverage Status](https://coveralls.io/repos/github/juanelas/solidity-types-from-json/badge.svg?branch=refs/tags/v0.1.5)](https://coveralls.io/github/juanelas/solidity-types-from-json?branch=refs/tags/v1.0.1)
 
 # @juanelas/solidity-types-from-json
 
