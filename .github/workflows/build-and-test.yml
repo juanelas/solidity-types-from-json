@@ -88,10 +88,8 @@ jobs:
         with:
           files: |
             LICENSE
-            dist/bundles/esm.js
-            dist/bundles/esm.min.js
-            dist/bundles/iife.js
-            dist/bundles/umd.js
+            dist/bundles/*.js
+          name: ${{ github.ref }} browser bundles 
 
       - name: NPM publish
         run: npm publish --access public
