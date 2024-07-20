@@ -1,4 +1,4 @@
-name: build, test (node and browser), coverage, publish to NPM
+name: CI/CD
 
 on:
   push:
