@@ -1,6 +1,6 @@
 {
   "name": "@juanelas/solidity-types-from-json",
-  "private": "true",
+  "private": "false",
   "version": "0.1.13",
   "description": "Compute solidity types from an arbitrary JS object so that we can use eth_signTypedData (EIP-712) with arbitrary objects",
   "keywords": [
