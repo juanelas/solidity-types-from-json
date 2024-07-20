@@ -83,12 +83,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: release bundled js
-        uses: alexellis/upload-assets@0.4.1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: release browser bundles
+        uses: softprops/action-gh-release@v2
         with:
-          asset_paths: '["dist/bundles/*.js"]'
+          files: |
+            LICENSE
+            dist/bundles/esm.js
+            dist/bundles/esm.min.js
+            dist/bundles/iife.js
+            dist/bundles/umd.js
 
       - name: NPM publish
         run: npm publish --access public
