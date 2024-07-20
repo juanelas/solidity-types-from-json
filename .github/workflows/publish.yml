@@ -36,6 +36,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get current package version
+        id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: release browser bundles
