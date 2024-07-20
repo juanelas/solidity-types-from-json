@@ -2,7 +2,6 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Node.js CI](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/juanelas/solidity-types-from-json/badge.svg?branch=main)](https://coveralls.io/github/juanelas/solidity-types-from-json?branch=main)
 
 # @juanelas/solidity-types-from-json
 
@@ -40,12 +39,61 @@ import * as solidityTypesFromJson from '@juanelas/solidity-types-from-json'
 > declare module '@juanelas/solidity-types-from-json/dist/esm/index.browser' // use the specific file you were importing
 > ```
 
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/solidity-types-from-json/main/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/solidity-types-from-json/main/dist/bundles/esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/solidity-types-from-json/main/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `@juanelas/solidity-types-from-json` in your project, just get the bundles from `node_modules/@juanelas/solidity-types-from-json/dist/bundles/`.
+You can also download browser ESM, IIFE and UMD bundles directly from the [releases page]([releases' page](https://gitlab.com/juanelas/solidity-types-from-json/releases) and manually add it to your project, or, if you have already installed `@juanelas/solidity-types-from-json` in your projec.
 
 ## Usage example
 
 ```typescript
-YOUR TYPESCRIPT EXAMPLE CODE HERE
+const exampleObject = {
+  name: 'Alice',
+  age: 30,
+  isActive: true,
+  ethAddress: '0xe688b84b23f322a994A53dbF8E15FA82CDB71127',
+  address: {
+    street: '123 Main St',
+    city: 'Wonderland',
+    arr: [2, 3],
+    obj: {
+      a: 1,
+      b: false
+    }
+  },
+  scores: [100, 200, 300],
+  preferences: [
+    { key: 'color', value: 'blue' },
+    { key: 'size', value: 'medium' }
+  ],
+  arrAlt: [
+    { a: 4, b: true }
+  ]
+}
+const {mainType, types} = solidityTypesFromJson.jsonToSolidityTypes(exampleObject, { mainTypeName: 'JWT' })
+
+// mainType = 'JWT'
+// types = {
+//   Obj: [{ name: 'a', type: 'uint256' }, { name: 'b', type: 'bool' }],
+//   Address: [
+//     { name: 'street', type: 'string' },
+//     { name: 'city', type: 'string' },
+//     { name: 'arr', type: 'uint256[]' },
+//     { name: 'obj', type: 'Obj' }
+//   ],
+//   Preference: [
+//     { name: 'key', type: 'string' },
+//     { name: 'value', type: 'string' }
+//   ],
+//   ArrAltItem: [{ name: 'a', type: 'uint256' }, { name: 'b', type: 'bool' }],
+//   JWT: [
+//     { name: 'name', type: 'string' },
+//     { name: 'age', type: 'uint256' },
+//     { name: 'isActive', type: 'bool' },
+//     { name: 'ethAddress', type: 'address' },
+//     { name: 'address', type: 'Address' },
+//     { name: 'scores', type: 'uint256[]' },
+//     { name: 'preferences', type: 'Preference[]' },
+//     { name: 'arrAlt', type: 'ArrAltItem[]' }
+//   ]
+// }
 ```
 
 ## API reference documentation

@@ -90,7 +90,7 @@ jobs:
         with:
           asset_paths: '["dist/bundles/*.js", "dist/bundle.umd.js", "dist/esm/bundle.js", "dist/esm/bundle.min.js"]'
 
-      # - name: NPM publish
-      #   run: npm publish --access public
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: NPM publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

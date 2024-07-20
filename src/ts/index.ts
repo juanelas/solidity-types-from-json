@@ -29,16 +29,16 @@ class SolidityTypes {
   addType (typeDescription: TypeDescriptionObject, typeName: string = this.baseTypeName): string {
     let addedTypeName = typeName
 
-    if (this.solidityTypes[addedTypeName] !== undefined) {
-      if (!isEqual(this.solidityTypes[addedTypeName], typeDescription)) {
+    if (this.getType(addedTypeName) !== undefined) {
+      if (!isEqual(this.getType(addedTypeName), typeDescription)) {
         let ctr = 2
 
         while (true) {
           addedTypeName = `${typeName}${ctr}`
-          if (this.solidityTypes[addedTypeName] === undefined) {
+          if (this.getType(addedTypeName) === undefined) {
             this.solidityTypes[addedTypeName] = typeDescription
             break
-          } else if (isEqual(this.solidityTypes[addedTypeName], typeDescription)) {
+          } else if (isEqual(this.getType(addedTypeName), typeDescription)) {
             break
           }
           ctr++
@@ -51,16 +51,6 @@ class SolidityTypes {
   }
 
   deleteType (name: string): void {
-    delete this.solidityTypes[name] // eslint-disable-line
-  }
-
-  renameType (name: string, newName: string): void {
-    if (this.solidityTypes[name] === undefined) {
-      throw new Error(`Cannot rename unexisting type ${name}`)
-    } else if (this.solidityTypes[newName] !== undefined) {
-      throw new Error(`Type ${newName} already exists`)
-    }
-    this.solidityTypes[newName] = this.solidityTypes[name]
     delete this.solidityTypes[name] // eslint-disable-line
   }
 }

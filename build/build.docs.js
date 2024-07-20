@@ -117,15 +117,11 @@ function getRepositoryData () {
 }
 
 function variableReplacements () {
-  const { repoProvider, repoUsername, repoName, repoDirectory, branch } = getRepositoryData() || {}
+  const { repoProvider, repoUsername, repoName, branch } = getRepositoryData() || {}
 
   const regex = /^(?:(?<scope>@.*?)\/)?(?<name>.*)/ // We are going to take only the package name part if there is a scope, e.g. @my-org/package-name
   const { name } = pkgJson.name.match(regex).groups
   const camelCaseName = camelise(name)
-
-  const iifeBundlePath = pkgJson.exports['./iife-browser-bundle'] !== undefined ? path.relative('.', pkgJson.exports['./iife-browser-bundle']) : undefined
-  const esmBundlePath = pkgJson.exports['./esm-browser-bundle'] !== undefined ? path.relative('.', pkgJson.exports['./esm-browser-bundle']) : undefined
-  const umdBundlePath = pkgJson.exports['./umd-browser-bundle'] !== undefined ? path.relative('.', pkgJson.exports['./umd-browser-bundle']) : undefined
 
   let useWorkflowBadge = false
   let useCoverallsBadge = false
@@ -138,22 +134,18 @@ function variableReplacements () {
     }
   }
 
-  let iifeBundle, esmBundle, umdBundle, workflowBadge, coverallsBadge
+  let releasesPage, workflowBadge, coverallsBadge
 
   if (repoProvider) {
     switch (repoProvider) {
       case 'github':
-        iifeBundle = iifeBundlePath !== undefined ? `[IIFE bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/${branch}/${repoDirectory !== undefined ? repoDirectory + '/' : ''}${iifeBundlePath})` : undefined
-        esmBundle = esmBundlePath !== undefined ? `[ESM bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/${branch}/${repoDirectory !== undefined ? repoDirectory + '/' : ''}${esmBundlePath})` : undefined
-        umdBundle = umdBundlePath !== undefined ? `[UMD bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/${branch}/${repoDirectory !== undefined ? repoDirectory + '/' : ''}${umdBundlePath})` : undefined
+        releasesPage = `[releases' page](https://gitlab.com/${repoUsername}/${repoName}/releases`
         workflowBadge = useWorkflowBadge ? `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)` : undefined
         coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=${branch})](https://coveralls.io/github/${repoUsername}/${repoName}?branch=${branch})` : undefined
         break
 
       case 'gitlab':
-        iifeBundle = iifeBundlePath !== undefined ? `[IIFE bundle](https://gitlab.com/${repoUsername}/${repoName}/-/raw/${branch}/${repoDirectory !== undefined ? repoDirectory + '/' : ''}${iifeBundlePath}?inline=false)` : undefined
-        esmBundle = esmBundlePath !== undefined ? `[ESM bundle](https://gitlab.com/${repoUsername}/${repoName}/-/raw/${branch}/${repoDirectory !== undefined ? repoDirectory + '/' : ''}${esmBundlePath}?inline=false)` : undefined
-        umdBundle = umdBundlePath !== undefined ? `[UMD bundle](https://gitlab.com/${repoUsername}/${repoName}/-/raw/${branch}/${repoDirectory !== undefined ? repoDirectory + '/' : ''}${umdBundlePath}?inline=false)` : undefined
+        coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=${branch})](https://coveralls.io/github/${repoUsername}/${repoName}?branch=${branch})` : undefined
         break
 
       default:
@@ -166,14 +158,12 @@ function variableReplacements () {
     .replace(/\{\{PKG_LICENSE\}\}/g, pkgJson.license.replace('-', '_'))
     .replace(/\{\{PKG_DESCRIPTION\}\}/g, pkgJson.description)
     .replace(/\{\{PKG_CAMELCASE\}\}/g, camelCaseName)
-    .replace(/\{\{IIFE_BUNDLE\}\}/g, iifeBundle || 'IIFE bundle')
-    .replace(/\{\{ESM_BUNDLE\}\}/g, esmBundle || 'ESM bundle')
-    .replace(/\{\{UMD_BUNDLE\}\}/g, umdBundle || 'UMD bundle')
+    .replace(/\{\{RELEASES_PAGE\}\}/g, releasesPage)
 
   if (repoProvider && repoProvider === 'github') {
-    template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}\n/gs, (workflowBadge ? `${workflowBadge}\n` : '') + (coverallsBadge ? `${coverallsBadge}\n` : ''))
+    template = template.replace(/\{\{BADGES\}\}\n/gs, (workflowBadge ? `${workflowBadge}\n` : '') + (coverallsBadge ? `${coverallsBadge}\n` : ''))
   } else {
-    template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}\n/gs, '')
+    template = template.replace(/\{\{BADGES\}\}\n/gs, '')
   }
 }
 
