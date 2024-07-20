@@ -139,7 +139,7 @@ function variableReplacements () {
   if (repoProvider) {
     switch (repoProvider) {
       case 'github':
-        releasesPage = `[releases' page](https://gitlab.com/${repoUsername}/${repoName}/releases`
+        releasesPage = `[releases' page](https://github.com/${repoUsername}/${repoName}/releases)`
         workflowBadge = useWorkflowBadge ? `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)` : undefined
         coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=${branch})](https://coveralls.io/github/${repoUsername}/${repoName}?branch=${branch})` : undefined
         break

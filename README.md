@@ -40,7 +40,7 @@ import * as solidityTypesFromJson from '@juanelas/solidity-types-from-json'
 > declare module '@juanelas/solidity-types-from-json/dist/esm/index.browser' // use the specific file you were importing
 > ```
 
-You can also download browser ESM, IIFE and UMD bundles directly from the [releases' page](https://gitlab.com/juanelas/solidity-types-from-json/releases and manually add it to your project, or, if you have already installed `@juanelas/solidity-types-from-json` in your projec.
+You can also download browser ESM, IIFE and UMD bundles directly from the [releases' page](https://github.com/juanelas/solidity-types-from-json/releases) and manually add it to your project, or, if you have already installed `@juanelas/solidity-types-from-json` in your projec.
 
 ## Usage example
 
