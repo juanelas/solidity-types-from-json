@@ -56,13 +56,23 @@ class SolidityTypes {
 }
 
 export interface SolidityTypedSchema {
+  /** The name of the main type in the types object. Specially useful when the `mainTypeName` option is not specified */
   mainType: string
+  /** An array of ethereum types */
   types: TypesObject
 }
 export interface JsonToSolidityTypesOptions {
+  /** By default main type name will be created automatically as Type<some_number>; you can however manually overwrite that name */
   mainTypeName?: string
+  /** Default is true. If it is false, typenames will not be inferred from key name. Sometimes it could help reducing the length of the created array of solidity types, since it will not create equal types with different names */
   getTypeNamesFromKeyValues?: boolean
 }
+/**
+ *
+ * @param obj an arbitrary JS object
+ * @param options options that affect how the types object is created
+ * @returns
+ */
 export function jsonToSolidityTypes (obj: any, options?: JsonToSolidityTypesOptions): SolidityTypedSchema {
   if (obj === null || typeof obj !== 'object' || Array.isArray(obj)) {
     throw new Error('JSON expected')
