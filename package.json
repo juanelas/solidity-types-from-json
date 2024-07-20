@@ -14,7 +14,10 @@
     "Juan Hernández Serrano <j.hernandez@upc.edu> (https://github.com/juanelas)",
     "Antonio Alarcón García-Saavedra <antonio.alarcon@upc.edu>"
   ],
-  "repository": "github:juanelas/solidity-types-from-json",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juanelas/solidity-types-from-json.git"
+  },
   "main": "./dist/cjs/index.node.js",
   "browser": "./dist/esm/index.browser.js",
   "types": "./dist/index.d.ts",
