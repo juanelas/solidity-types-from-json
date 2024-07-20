@@ -134,7 +134,7 @@
   "nodeBrowserSkel": {
     "badges": {
       "workflow": true,
-      "coveralls": false
+      "coveralls": true
     },
     "git": {
       "branch": "main"
