@@ -28,7 +28,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
 
       - name: install
         run: npm ci
@@ -54,46 +53,3 @@ jobs:
         # env:
         #   VARIABLE1: ${{ secrets.VARIABLE1 }}
         #   VARIABLE2: ${{ secrets.VARIABLE2 }}
-
-  publish:
-    needs: [buildntest]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Git checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.5.1' # 22.5.1 is a temporary fix since 22 now points to 22.5.0 that has a bug that breaks installation
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-
-      - name: install
-        run: npm ci
-      
-      - name: build
-        run: npm run build
-
-      - name: coverage
-        run: npm run coverage
-
-      - name: send report to coveralls.io
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: release browser bundles
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            LICENSE
-            dist/bundles/*.js
-          name: "${{ github.ref_name }} browser bundles"
-
-      - name: NPM publish
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

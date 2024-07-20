@@ -117,7 +117,7 @@ function getRepositoryData () {
 }
 
 function variableReplacements () {
-  const { repoProvider, repoUsername, repoName, branch } = getRepositoryData() || {}
+  const { repoProvider, repoUsername, repoName } = getRepositoryData() || {}
 
   const regex = /^(?:(?<scope>@.*?)\/)?(?<name>.*)/ // We are going to take only the package name part if there is a scope, e.g. @my-org/package-name
   const { name } = pkgJson.name.match(regex).groups
@@ -141,11 +141,11 @@ function variableReplacements () {
       case 'github':
         releasesPage = `[releases' page](https://github.com/${repoUsername}/${repoName}/releases)`
         workflowBadge = useWorkflowBadge ? `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)` : undefined
-        coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=${branch})](https://coveralls.io/github/${repoUsername}/${repoName}?branch=${branch})` : undefined
+        coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=refs/tags/v0.1.5)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=refs/tags/v${pkgJson.version})` : undefined
         break
 
       case 'gitlab':
-        coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=${branch})](https://coveralls.io/github/${repoUsername}/${repoName}?branch=${branch})` : undefined
+        // TO-DO
         break
 
       default:
