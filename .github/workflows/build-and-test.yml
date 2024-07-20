@@ -91,7 +91,7 @@ jobs:
           files: |
             LICENSE
             dist/bundles/*.js
-          name: ${{ GITHUB_REF_NAme }} Browser bundles 
+          name: ${{ GITHUB_REF_NAME }} Browser bundles 
 
       - name: NPM publish
         run: npm publish --access public
