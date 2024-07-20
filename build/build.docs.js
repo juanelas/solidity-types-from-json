@@ -155,6 +155,7 @@ function variableReplacements () {
 
   template = template
     .replace(/\{\{PKG_NAME\}\}/g, pkgJson.name)
+    .replace(/\{\{PKG_NAME_NO_SCOPE\}\}/g, name)
     .replace(/\{\{PKG_LICENSE\}\}/g, pkgJson.license.replace('-', '_'))
     .replace(/\{\{PKG_DESCRIPTION\}\}/g, pkgJson.description)
     .replace(/\{\{PKG_CAMELCASE\}\}/g, camelCaseName)

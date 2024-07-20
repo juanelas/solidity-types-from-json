@@ -33,13 +33,13 @@ import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 > - `{{PKG_NAME}}/dist/esm/index.node`: for Node.js ESM module
 > - `{{PKG_NAME}}/dist/esm/index.browser`: for browser ESM module
 >
-> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating adding to a types declaration file (`.d.ts`) the following line:
+> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating and importing to your TS project a new types declaration file `{{PKG_NAME_NO_SCOPE}}.d.ts` with the following line:
 >
 > ```typescript
-> declare module '{{PKG_NAME}}/dist/esm/index.browser' // use the specific file you were importing
+> declare module '{{PKG_NAME}}/dist/esm/index.browser' // use the specific module file you are importing
 > ```
 
-You can also download browser ESM, IIFE and UMD bundles directly from the {{RELEASES_PAGE}} and manually add it to your project, or, if you have already installed `{{PKG_NAME}}` in your projec.
+You can also download browser ESM, IIFE and UMD bundles directly from the {{RELEASES_PAGE}} and manually add them to your project.
 
 ## Usage example
 
