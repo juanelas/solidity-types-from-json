@@ -8,6 +8,10 @@
 
 Compute solidity types from an arbitrary JS object so that we can use eth_signTypedData (EIP-712) with arbitrary objects.
 
+- [Install and use](#install-and-use)
+- [Usage example](#usage-example)
+- [API reference documentation](#api-reference-documentation)
+
 ## Install and use
 
 `@juanelas/solidity-types-from-json` can be imported to your project with `npm`:

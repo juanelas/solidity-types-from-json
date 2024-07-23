@@ -7,6 +7,10 @@
 
 {{PKG_DESCRIPTION}}
 
+- [Install and use](#install-and-use)
+- [Usage example](#usage-example)
+- [API reference documentation](#api-reference-documentation)
+
 ## Install and use
 
 `{{PKG_NAME}}` can be imported to your project with `npm`:
