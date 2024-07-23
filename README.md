@@ -1,12 +1,12 @@
 [![License: EUPL_1.2](https://img.shields.io/badge/License-EUPL_1.2-yellow.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Node.js CI](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml)
+[![Build and test](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/solidity-types-from-json/actions/workflows/build-and-test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/juanelas/solidity-types-from-json/badge.svg?branch=refs/tags/v0.1.5)](https://coveralls.io/github/juanelas/solidity-types-from-json?branch=refs/tags/v1.0.1)
 
 # @juanelas/solidity-types-from-json
 
-Compute solidity types from an arbitrary JS object so that we can use eth_signTypedData (EIP-712) with arbitrary objects
+Compute solidity types from an arbitrary JS object so that we can use eth_signTypedData (EIP-712) with arbitrary objects.
 
 ## Install and use
 

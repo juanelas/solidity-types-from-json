@@ -71,12 +71,12 @@ async function buildTests (testFiles) {
       json(),
       resolve({ browser: true }),
       replace({
-        '#pkg': `/${name}.esm.js`,
+        '#pkg': '/esm.min.js',
         delimiters: ['', ''],
         preventAssignment: true
       })
     ],
-    external: [`/${name}.esm.js`]
+    external: ['/esm.min.js']
   }
   const bundle = await rollup.rollup(inputOptions)
   const { output } = await bundle.generate({ format: 'es' })
@@ -96,15 +96,12 @@ class TestServer {
   }
 
   async init (testFiles) {
-    /** Let us first check if the necessary files are built, and if not, build */
-    if (!fs.existsSync(pkgJson.exports['./esm-browser-bundle'])) {
-      await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/rollup.config.mjs'])
-    }
+    await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/testing/browser/rollup.config.mjs'])
 
     const tests = await buildTests(testFiles)
     this.server.on('request', function (req, res) {
-      if (req.url === `/${name}.esm.js`) {
-        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle']), function (err, data) {
+      if (req.url === '/esm.min.js') {
+        fs.readFile(path.join(rootDir, pkgJson.directories.temp, 'esm.min.js'), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))
@@ -113,8 +110,8 @@ class TestServer {
           res.writeHead(200, { 'Content-Type': 'text/javascript' })
           res.end(data)
         })
-      } else if (req.url === '/' + path.basename(pkgJson.exports['./esm-browser-bundle'] + '.map')) {
-        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle'] + '.map'), function (err, data) {
+      } else if (req.url === '/esm.min.js.map') {
+        fs.readFile(path.join(rootDir, pkgJson.directories.temp, 'esm.min.js.map'), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))
@@ -188,7 +185,19 @@ class TestServer {
 
   close () {
     return new Promise((resolve, reject) => {
-      this.server.close(error => (error) ? reject(error) : resolve())
+      this.server.close(error => {
+        if (error) {
+          reject(error)
+        } else {
+          try {
+            fs.rmSync(path.join(rootDir, pkgJson.directories.temp, 'esm.min.js'))
+            fs.rmSync(path.join(rootDir, pkgJson.directories.temp, 'esm.min.js.map'))
+            fs.rmdirSync(path.join(rootDir, pkgJson.directories.temp)) // delete the temp directory if it is empty
+          } catch (error) {
+          }
+          resolve()
+        }
+      })
     })
   }
 }

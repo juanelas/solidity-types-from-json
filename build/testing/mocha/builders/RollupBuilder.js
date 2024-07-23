@@ -45,9 +45,6 @@ class RollupBuilder extends Builder {
       return (file === watchedModuleAbsPath) || (file === dtsAbsPath)
     })
 
-    // rollupOptions.output[0].sourcemap = 'inline'
-    // rollupOptions.output[0].sourcemapExcludeSources = true
-
     this.builder = new RollupBundler({ rollupOptions, watch: this.watch, watchedModule: this.watchedModule })
 
     this.builder.on('event', event => {

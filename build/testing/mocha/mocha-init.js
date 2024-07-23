@@ -47,7 +47,7 @@ exports.mochaHooks = {
         // reset any transpiled module (just delete the cache so it is fully reloaded)
         for (const key in require.cache) {
           const relativePath = path.relative(rootDir, key)
-          if (relativePath.startsWith(`.mocha-ts${path.sep}`) || relativePath.startsWith(`dist${path.sep}`)) {
+          if (relativePath.startsWith(`${mochaTsRelativeDir}${path.sep}`) || relativePath.startsWith(`dist${path.sep}`)) {
             delete require.cache[key]
           }
         }
@@ -65,4 +65,8 @@ exports.mochaGlobalTeardown = async function () {
   // main thread and thus the mocha watcher, which otherwise would complain
   // about files being deleted
   rimraf.sync(tempDir, { disableGlob: true })
+  try {
+    fs.rmdirSync(path.join(rootDir, pkgJson.directories.temp)) // delete the temp directory if it is empty
+  } catch (error) {
+  }
 }

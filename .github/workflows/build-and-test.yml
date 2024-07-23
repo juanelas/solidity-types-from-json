@@ -1,4 +1,4 @@
-name: CI/CD
+name: build n test
 
 on:
   push:
@@ -12,9 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest, windows-latest, macos-latest]
-        os: [ubuntu-latest]
-        node-version: [18, 20, 22.5.1] # 22.5.1 is a temporary fix since 22 now points to 22.5.0 that has a bug that breaks installation
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['18', '20', '22.5.1'] # 22.5.1 is a temporary fix since 22 now points to 22.5.0 that has a bug that breaks installation
       # When set to true, GitHub cancels all in-progress jobs if any matrix job fails.
       fail-fast: false
       # The maximum number of jobs that can run simultaneously. Set to 1 if you can't run tests in parallel
@@ -35,7 +34,7 @@ jobs:
       - name: build
         run: npm run build
 
-      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22'
+      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20'
         name: browser tests
         run: npm run test:browser-headless
         # env:
@@ -48,8 +47,8 @@ jobs:
         #   VARIABLE1: ${{ secrets.VARIABLE1 }}
         #   VARIABLE2: ${{ secrets.VARIABLE2 }}
       
-      - name: node cjs tests and coverage
-        run: npm run coverage
+      - name: node cjs tests
+        run: npm run test:node-cjs
         # env:
         #   VARIABLE1: ${{ secrets.VARIABLE1 }}
         #   VARIABLE2: ${{ secrets.VARIABLE2 }}

@@ -11,9 +11,8 @@ import { existsSync, readFileSync } from 'fs'
 import { builtinModules } from 'module'
 import { join } from 'path'
 import dts from 'rollup-plugin-dts'
-import { compileDts } from './my-rollup-plugin-dts.mjs'
-
 import * as url from 'url'
+import { compileDts } from './my-rollup-plugin-dts.mjs'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -105,24 +104,22 @@ export default [
     input,
     output: [
       {
-        file: join(rootDir, pkgJson.exports['./esm-browser-bundle-nomin']),
-        format: 'es',
-        sourcemap: true
+        file: join(rootDir, pkgJson.directories.bundles, `${name}.esm.js`),
+        format: 'es'
       },
       {
-        file: join(rootDir, pkgJson.exports['./esm-browser-bundle']),
+        file: join(rootDir, pkgJson.directories.bundles, `${name}.esm.min.js`),
         format: 'es',
-        sourcemap: true,
         plugins: [terser()]
       },
       {
-        file: join(rootDir, pkgJson.exports['./iife-browser-bundle']),
+        file: join(rootDir, pkgJson.directories.bundles, `${name}.iife.js`),
         format: 'iife',
         name: pkgCamelisedName,
         plugins: [terser()]
       },
       {
-        file: join(rootDir, pkgJson.exports['./umd-browser-bundle']),
+        file: join(rootDir, pkgJson.directories.bundles, `${name}.umd.js`),
         format: 'umd',
         name: pkgCamelisedName,
         plugins: [terser()]

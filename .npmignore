@@ -4,6 +4,9 @@ build
 # Bundles
 dist/bundles
 
+# Docs src
+src/docs
+
 # Test files
 test
 __tests__
@@ -38,15 +41,12 @@ coverage
 # tsconfig
 tsconfig.json
 
-# SRC
-src
-
 # Environment files
 *.env
 *.env.*
 
 # Test temporal files
-.mocha-ts
+.nbs
 .tsconfig.json
 .types
 

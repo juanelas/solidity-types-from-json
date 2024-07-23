@@ -39,7 +39,7 @@ import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 > declare module '{{PKG_NAME}}/dist/esm/index.browser' // use the specific module file you are importing
 > ```
 
-You can also download browser ESM, IIFE and UMD bundles directly from the {{RELEASES_PAGE}} and manually add them to your project.
+{{BROWSER_BUNDLES_INSTALLATION}}
 
 ## Usage example
 
