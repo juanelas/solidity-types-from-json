@@ -17,7 +17,7 @@
     "url": "git+https://github.com/juanelas/solidity-types-from-json.git"
   },
   "license": "EUPL-1.2",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "./dist/cjs/index.node.js",
   "browser": "./dist/esm/index.browser.js",
   "types": "./dist/index.d.ts",
